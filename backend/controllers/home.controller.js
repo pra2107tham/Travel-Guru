@@ -8,15 +8,17 @@ import jwt from "jsonwebtoken";
 
 const getAnswer = async (req, res) => {
   const prompt = req.body.input;
-  const token = req.cookies.jwt;
-  if(!token){
-    return res.status(401).json({error: "Unauthorized"})
-  }
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  if(!decoded){
-    return res.status(401).json({error: "Unauthorized"})
-  }
-  const userId = decoded.userId;
+  // const token = req.cookies.jwt;
+  // if(!token){
+  //   return res.status(401).json({error: "Unauthorized"})
+  // }
+  // const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  // if(!decoded){
+  //   return res.status(401).json({error: "Unauthorized"})
+  // }
+  const id = localStorage.getItem("authUser")._id;
+  const userId = id;
+  // const userId = decoded.userId;
 
   try {
     let conversation = await Conversation.findOne({ user: userId }).populate(
@@ -116,15 +118,17 @@ Strive for clear communication and logical flow in generating travel itineraries
 };
 
 const getMessages = async (req, res) => {
-    const token = req.cookies.jwt;
-    if(!token){
-        return res.status(401).json({error: "Unauthorized"})
-    }
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  if(!decoded){
-    return res.status(401).json({error: "Unauthorized"})
-  }
-  const userId = decoded.userId;
+  //   const token = req.cookies.jwt;
+  //   console.log(token)
+  //   if(!token){
+  //       return res.status(401).json({error: "Unauthorized"})
+  //   }
+  // const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  // if(!decoded){
+  //   return res.status(401).json({error: "Unauthorized"})
+  // }
+  const id = localStorage.getItem("authUser")._id;
+  const userId = id;
   try {
     let conversation = await Conversation.findOne({ user: userId }).populate(
       "messages"
