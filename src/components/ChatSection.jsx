@@ -10,21 +10,18 @@ const ChatSection = () => {
   const [loading, setLoading] = useState(false);
   const lastMessageRef = useRef(null);
 
-  const {places, setPlaces } = useMapsContext();
+  const { places, setPlaces } = useMapsContext();
 
   const handleChange = (e) => {
     setInput(e.target.value);
   };
 
-  const derivePlaces = async ({prompt}) => {
-    // console.log(import.meta.env.VITE_HUGGINGFACE_KEY)
+  const derivePlaces = async ({ prompt }) => {
     const hf = new HfInference(import.meta.env.VITE_HUGGINGFACE_KEY);
-    const model = "dslim/bert-large-NER"
-    const result = await hf.tokenClassification({model: "dslim/bert-large-NER", inputs: prompt})
-    const words = result.map(entity => entity.word);
+    const result = await hf.tokenClassification({ model: "dslim/bert-base-NER-uncased", inputs: prompt });
+    const words = result.filter(entity => entity.entity_group === "LOC").map(entity => entity.word);
+    setPlaces(words);
     console.log(words)
-    setPlaces(words)
-    console.log(places)
   };
 
   const handleSubmit = async (e) => {
@@ -42,7 +39,7 @@ const ChatSection = () => {
         { sender: "user", message: input },
         { sender: "model", message: response.data.aiResponse },
       ]);
-      derivePlaces({prompt: response.data.aiResponse})
+      await derivePlaces({ prompt: response.data.aiResponse });
       setInput(""); // Clear input field
     } catch (error) {
       console.error("Error getting answer: ", error);
@@ -58,6 +55,12 @@ const ChatSection = () => {
         const response = await axios.get("/api/home/");
         console.log(response.data);
         setMessages(response.data.messages);
+
+        // Derive places from the last message
+        const lastMessage = response.data.messages.find(msg => msg.sender === "model");
+        if (lastMessage) {
+          await derivePlaces({ prompt: lastMessage.message });
+        }
       } catch (error) {
         console.log("Error fetching messages", error);
       } finally {

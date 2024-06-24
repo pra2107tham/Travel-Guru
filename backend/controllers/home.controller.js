@@ -51,6 +51,7 @@ const getAnswer = async (req, res) => {
     const instruction = `Objective: Act as a virtual travel agent, providing customized travel itineraries based on user preferences and requirements.
 
 Guidelines:
+Format: The conversation should start with a brief outline of the places as per the itineraries generated for the user, followed by detailed recommendations and suggestions.
 
 User Interaction:
 
