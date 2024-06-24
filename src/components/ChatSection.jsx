@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import Message from "./Message";
 import axios from "axios";
+import { useMapsContext } from "../context/MapsContext";
+import { HfInference } from "@huggingface/inference";
 
 const ChatSection = () => {
   const [input, setInput] = useState("");
@@ -8,8 +10,21 @@ const ChatSection = () => {
   const [loading, setLoading] = useState(false);
   const lastMessageRef = useRef(null);
 
+  const {places, setPlaces } = useMapsContext();
+
   const handleChange = (e) => {
     setInput(e.target.value);
+  };
+
+  const derivePlaces = async ({prompt}) => {
+    // console.log(import.meta.env.VITE_HUGGINGFACE_KEY)
+    const hf = new HfInference(import.meta.env.VITE_HUGGINGFACE_KEY);
+    const model = "dslim/bert-large-NER"
+    const result = await hf.tokenClassification({model: "dslim/bert-large-NER", inputs: prompt})
+    const words = result.map(entity => entity.word);
+    console.log(words)
+    setPlaces(words)
+    console.log(places)
   };
 
   const handleSubmit = async (e) => {
@@ -18,7 +33,7 @@ const ChatSection = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post("/api/home/getAnswer", {input});
+      const response = await axios.post("/api/home/getAnswer", { input });
       console.log(response.data);
 
       // Update state with the new message and AI response
@@ -27,6 +42,7 @@ const ChatSection = () => {
         { sender: "user", message: input },
         { sender: "model", message: response.data.aiResponse },
       ]);
+      derivePlaces({prompt: response.data.aiResponse})
       setInput(""); // Clear input field
     } catch (error) {
       console.error("Error getting answer: ", error);
@@ -59,11 +75,14 @@ const ChatSection = () => {
 
   return (
     <div id="chat-section" className="bg-black flex-grow p-4 overflow-y-auto">
-      <div className="bg-zinc-950 hover:bg-zinc rounded-lg shadow-lg p-4 flex flex-col flex-grow h-full">
+      <div className="bg-zinc-950 hover:bg-[#34343474] rounded-lg shadow-lg p-4 flex flex-col flex-grow h-full">
         {/* Messages */}
         <div id="messages" className="flex-grow overflow-y-auto mb-4">
           {messages.map((msg, index) => (
-            <div key={index} ref={index === messages.length - 1 ? lastMessageRef : null}>
+            <div
+              key={index}
+              ref={index === messages.length - 1 ? lastMessageRef : null}
+            >
               <Message msg={msg} />
             </div>
           ))}
