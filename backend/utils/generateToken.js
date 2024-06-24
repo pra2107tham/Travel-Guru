@@ -8,7 +8,7 @@ const generateTokenAndSetCookie = (userId, res) => {
         maxAge: 15*24*60*60*1000,
         // sameSite: "strict",
         secure: true,
-        sameSite: "none",
+        sameSite: "None",
         domain: '.onrender.com', // Set to the parent domain that covers both frontend and backend
         path:"/"
     })
