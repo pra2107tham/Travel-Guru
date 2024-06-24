@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:3000' // Proxy API requests to the local backend during development
+      '/api': 'https://travel-guru-api.onrender.com/' // Proxy API requests to the local backend during development
     }
   }
 })
