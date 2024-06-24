@@ -15,7 +15,8 @@ const useLogin = () => {
                 {
                     username,
                     password
-                }
+                },
+                {withCredentials:true}
             )
             const data = res.data
             // console.log(data)

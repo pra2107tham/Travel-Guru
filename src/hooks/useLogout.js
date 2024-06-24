@@ -10,7 +10,7 @@ const useLogout = () => {
     const logout = async() => {
         setLoading(true)
         try {
-            const res = await axios.post(`${import.meta.env.VITE_PROXY}/auth/logout`)
+            const res = await axios.post(`${import.meta.env.VITE_PROXY}/auth/logout`,{}, {withCredentials:true})
             console.log(res.message)
             localStorage.clear("authUser")
             setAuthUser(null)

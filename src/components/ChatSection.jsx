@@ -30,7 +30,7 @@ const ChatSection = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post(`${import.meta.env.VITE_PROXY}/home/getAnswer`, { input });
+      const response = await axios.post(`${import.meta.env.VITE_PROXY}/home/getAnswer`, { input },{ withCredentials: true });
       // console.log(response.data);
 
       // Update state with the new message and AI response
@@ -52,7 +52,7 @@ const ChatSection = () => {
     const getMessages = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${import.meta.env.VITE_PROXY}/home/`);
+        const response = await axios.get(`${import.meta.env.VITE_PROXY}/home/`,{ withCredentials: true });
         console.log(response.data);
         setMessages(response.data.messages);
 
