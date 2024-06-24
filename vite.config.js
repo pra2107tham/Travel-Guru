@@ -8,8 +8,5 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:3000' // Proxy API requests to the local backend during development
     }
-  },
-  build: {
-    outDir: 'dist' // Ensure the output directory is set to 'dist'
   }
 })
