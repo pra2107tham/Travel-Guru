@@ -1,9 +1,9 @@
 {
     "version": 2,
     "name": "Travel Guru",
-    "rewrites":{
+    "rewrites":[{
       "source":"/(.*)",
       "destination":"/"
-    }
+    }]
   }
   
