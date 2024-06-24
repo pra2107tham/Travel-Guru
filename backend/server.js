@@ -9,9 +9,7 @@ const app = express();
 dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-    origin: "",
-}));
+app.use(cors());
 
 import authRoutes from './routes/auth.routes.js';
 import homeRoutes from './routes/home.routes.js';

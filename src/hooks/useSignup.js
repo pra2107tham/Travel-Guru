@@ -10,7 +10,7 @@ const useSignup = () => {
   const signup = async ({username,password}) => {
     setLoading(true)
     try {
-        const res = await axios.post("/api/auth/signup",
+        const res = await axios.post(`${import.meta.env.VITE_PROXY}/auth/signup`,
             {
                 
                 username,
