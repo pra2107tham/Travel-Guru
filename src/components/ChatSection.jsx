@@ -21,7 +21,7 @@ const ChatSection = () => {
     const result = await hf.tokenClassification({ model: "dslim/bert-base-NER-uncased", inputs: prompt });
     const words = result.filter(entity => entity.entity_group === "LOC").map(entity => entity.word);
     setPlaces(words);
-    console.log(words)
+    // console.log(words)
   };
 
   const handleSubmit = async (e) => {
@@ -31,7 +31,7 @@ const ChatSection = () => {
     try {
       setLoading(true);
       const response = await axios.post("/api/home/getAnswer", { input });
-      console.log(response.data);
+      // console.log(response.data);
 
       // Update state with the new message and AI response
       setMessages((prevMessages) => [

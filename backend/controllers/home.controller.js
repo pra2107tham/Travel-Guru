@@ -130,7 +130,7 @@ const getMessages = async (req, res) => {
       "messages"
     );
     if (!conversation) {
-      return res.status(200).json({ message: "Start a new conversation" });
+      conversation = await Conversation.create({ user: userId })
     }
     const messages = await Message.find({
       _id: { $in: conversation.messages },
