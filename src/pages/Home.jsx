@@ -14,7 +14,7 @@ const Home = () => {
           <p className="text-xl mb-8 animate-fade-in-delayed font-poppins">
             Your ultimate AI travel companion
           </p>
-          <Link to="/">
+          <Link to="/login">
             <button className="bg-cyan-600 text-white font-semibold py-2 px-4 rounded hover:bg-cyan-500 transition duration-300 ease-in-out transform hover:scale-105 animate-bounce">
               Get Started
             </button>
